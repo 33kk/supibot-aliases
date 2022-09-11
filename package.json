@@ -1,0 +1,25 @@
+{
+  "name": "supibot-aliases",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "push": "node push.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@octokit/rest": "^19.0.4",
+    "@types/node": "^18.7.16",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "esbuild": "^0.15.7",
+    "eslint": "^8.23.0",
+    "prettier": "^2.7.1",
+    "supi-core": "github:Supinic/supi-core",
+    "supibot-package-manager": "github:supinic/supibot-package-manager",
+    "typescript": "^4.8.3"
+  }
+}

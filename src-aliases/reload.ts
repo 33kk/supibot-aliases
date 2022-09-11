@@ -1,0 +1,36 @@
+export const GIST_ID = "44de2e5479bee84e5433f46b7726400c";
+// -------------------------------------------------------
+
+import { callback, def, IMPORT_GIST_REGEX, pipe, pluralize } from "#";
+
+const SAY_CMD = "abb say --";
+const RELOAD_CMD = "js errorInfo:true force:true";
+
+def("main", () => {
+	const arg = (args as string[])[0];
+
+	if (/^[0-9a-z]{32}$/.test(arg))
+		return `${RELOAD_CMD} importGist:${arg} "Reloaded!"`;
+	else
+		return pipe(`alias code ${arg}`, callback("parse", GIST_ID), "$ eval");
+});
+
+def("parse", () => {
+	const code = (args as string[]).join(" ");
+
+	let gists: string[] = [];
+	for (const match of code.matchAll(IMPORT_GIST_REGEX)) {
+		if (!gists.includes(match[1]))
+			gists.push(match[1]);
+	}
+
+	if (gists.length === 0) {
+		return `abb say No imported gists found.`;
+	}
+
+	return pipe(
+		...gists.map(gist => `${RELOAD_CMD} importGist:${gist} "//"`),
+		"null",
+		`${SAY_CMD} Reloaded ${gists.length} imported ${pluralize(gists.length, "gist", "gists")}!`
+	);
+});
