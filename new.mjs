@@ -42,6 +42,8 @@ entrypoint("main", () => {
 });`;
 
 	await writeFile(sourcePath, content);
+
+	console.log(chalk.green(`Gist ${gist.data.html_url} and file ${sourcePath} successfully created!`));
 }
 
 main();
