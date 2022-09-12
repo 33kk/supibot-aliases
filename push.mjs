@@ -32,7 +32,7 @@ async function supibotCommand(query, cooldown = 3) {
 	const res = await fetch("https://supinic.com/api/bot/command/run", {
 		method: "POST",
 		headers: {
-			"Cookie": config.supibot,
+			"Authorization": `Basic ${config.supibot}`,
 			"Content-Type": "application/json"
 		},
 		body: JSON.stringify({ query: "$" + query })
