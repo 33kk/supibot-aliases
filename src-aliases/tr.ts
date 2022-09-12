@@ -1,5 +1,5 @@
 export const GIST_ID = "af8853c4fda707489b6bcb01234c2932";
-/// $pipe _force:true _char:NWeocqXKgxXrwYUGInbCnrqxK -- js importGist:af8853c4fda707489b6bcb01234c2932 function:main() -- ${0+} NWeocqXKgxXrwYUGInbCnrqxK $ eval NWeocqXKgxXrwYUGInbCnrqxK js importGist:af8853c4fda707489b6bcb01234c2932 function:post() -- 
+/// $pipe _force:true _char:| -- js importGist:af8853c4fda707489b6bcb01234c2932 function:main() -- ${0+} | $ eval | js importGist:af8853c4fda707489b6bcb01234c2932 function:post() -- 
 
 import { entrypoint, pipe, t } from "#";
 

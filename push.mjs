@@ -5,6 +5,9 @@ import { build as esbuild } from "esbuild";
 import { Octokit } from "@octokit/rest";
 import chalk from "chalk";
 import config from "./config.mjs";
+import supiUtils from "supi-core/singletons/utils.js";
+
+const utils = supiUtils.singleton();
 
 const octokit = new Octokit({
 	auth: config.github
@@ -137,7 +140,13 @@ async function updateAlias(name) {
 		console.log(chalk.yellow("No alias command found"));
 	}
 	else {
-		const aliasCommand = aliasCommandMatch[1];
+		let aliasCommand = aliasCommandMatch[1];
+
+		const matches = Array.from(aliasCommand.matchAll(/_char:([^\s]+)/g)).map(e => e[1]);
+
+		for (const match of matches) {
+			aliasCommand = aliasCommand.replaceAll(match, utils.randomString(25));
+		}
 
 		const response = await supibotCommand(`alias addedit ${name} ${aliasCommand}`);
 
