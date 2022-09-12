@@ -1,7 +1,7 @@
 #!/usr/bin/node
 import { readdir, readFile } from "fs/promises";
 import { join } from "path";
-import { build } from "esbuild";
+import { build as esbuild } from "esbuild";
 import { Octokit } from "@octokit/rest";
 import chalk from "chalk";
 import config from "./config.mjs";
@@ -16,14 +16,16 @@ async function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function waitCooldown(s = 3) {
+async function waitCooldown(s) {
 	console.log(chalk.gray("Waiting for cooldown..."));
 	while (!((+new Date() - lastRun) > s * 1000)) {
 		await sleep(50);
 	}
 }
 
-async function supibotCommand(query) {
+async function supibotCommand(query, cooldown = 3) {
+	await waitCooldown(cooldown);
+
 	const res = await fetch("https://supinic.com/api/bot/command/run", {
 		method: "POST",
 		headers: {
@@ -32,7 +34,9 @@ async function supibotCommand(query) {
 		},
 		body: JSON.stringify({ query: "$" + query })
 	});
+
 	lastRun = +new Date();
+
 	const json = await res.json();
 	return json.data.reply;
 }
@@ -70,8 +74,7 @@ async function main() {
 	for (const chunk of gistChunks) {
 		console.log(`Reloading ${chunk.join(", ")}`);
 
-		await waitCooldown(7.5);
-		const response = await supibotCommand(`pipe ${chunk.map(gistId => `js force:true errorInfo:true importGist:${gistId} "//"`).join(" | ")} | null | abb say Gists successfully reloaded!`);
+		const response = await supibotCommand(`pipe ${chunk.map(gistId => `js force:true errorInfo:true importGist:${gistId} "//"`).join(" | ")} | null | abb say Gists successfully reloaded!`, 7.5);
 
 		if (!response.includes("success")) {
 			throw response;
@@ -81,15 +84,14 @@ async function main() {
 }
 
 async function updateAlias(name) {
-	const sourcePath = join("./src-aliases", `${name}.ts`);
 	const bundlePath = join("./dist", `${name}.js`);
-
+	const sourcePath = join("./src-aliases", `${name}.ts`);
 	const source = await readFile(sourcePath, { encoding: "utf-8" });
 
-	const gistIdMatch = source.match(/^(?:export )?const GIST_ID = ['"`](.*?)['"`];?/m);
 	const aliasCommandMatch = source.match(/^\/\/\/ \$(.*?)$/m);
+	const gistIdMatch = source.match(/^(?:export )?const GIST_ID = ['"`](.*?)['"`];?/m);
 
-	await build({
+	await esbuild({
 		write: true,
 		bundle: true,
 		minify: true,
@@ -103,11 +105,9 @@ async function updateAlias(name) {
 	}
 
 	const gistId = gistIdMatch[1];
-
 	const gist = await octokit.gists.get({
 		gist_id: gistId
 	});
-
 	const gistFilename = Object.keys(gist.data.files)[0];
 
 	const bundle = await readFile(bundlePath, { encoding: "utf-8" });
@@ -118,6 +118,7 @@ async function updateAlias(name) {
 	else {
 		await octokit.gists.update({
 			gist_id: gistId,
+			description: config.repo,
 			files: {
 				[gistFilename]: {
 					content: bundle
@@ -137,8 +138,8 @@ async function updateAlias(name) {
 	else {
 		const aliasCommand = aliasCommandMatch[1];
 
-		await waitCooldown();
 		const response = await supibotCommand(`alias addedit ${name} ${aliasCommand}`);
+
 		if (!response.includes("success")) {
 			throw response;
 		}
