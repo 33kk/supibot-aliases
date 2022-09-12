@@ -1,16 +1,15 @@
 export const GIST_ID = "44de2e5479bee84e5433f46b7726400c";
 /// $pipe _char:| -- js importGist:${GIST_ID} function:main() -- ${0+} | $ eval 
 
-import { callback, entrypoint, IMPORT_GIST_REGEX, pipe, pluralize } from "#";
+import { callback, cmd, entrypoint, IMPORT_GIST_REGEX, pipe, pluralize, say } from "#";
 
-const SAY_CMD = "abb say --";
-const RELOAD_CMD = "js errorInfo:true force:true";
+const reload = (gistId: string, text: string) => cmd("js", { errorInfo: true, force: true, importGist: gistId }, text);
 
 entrypoint("main", () => {
 	const arg = (args as string[])[0];
 
 	if (/^[0-9a-z]{32}$/.test(arg))
-		return `${RELOAD_CMD} importGist:${arg} "Reloaded!"`;
+		return reload(arg, "Reloaded!");
 	else
 		return pipe(`alias code ${arg}`, callback("parse", GIST_ID), "$ eval");
 });
@@ -25,12 +24,12 @@ entrypoint("parse", () => {
 	}
 
 	if (gists.length === 0) {
-		return `abb say No imported gists found.`;
+		return say("No imported gists found.");
 	}
 
 	return pipe(
-		...gists.map(gist => `${RELOAD_CMD} importGist:${gist} "//"`),
+		...gists.map(gist => reload(gist, "//")),
 		"null",
-		`${SAY_CMD} Reloaded ${gists.length} imported ${pluralize(gists.length, "gist", "gists")}!`
+		say(`Reloaded ${gists.length} imported ${pluralize(gists.length, "gist", "gists")}!`)
 	);
 });

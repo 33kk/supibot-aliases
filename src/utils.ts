@@ -1,4 +1,4 @@
-export const entrypoint = (name: any, fn: any) => {
+export const entrypoint = (name: string, fn: any) => {
 	(<any>global)[name] = fn;
 };
 
@@ -26,11 +26,35 @@ export const t = (strings: TemplateStringsArray, ...values: any[]) => {
 
 export const callback = (fn: string, gistId: string) => `js importGist:${gistId} function:${fn}() --`;
 
-function joinWithAnd(item: string[]) {
+export const joinCustomLastSep = (item: string[], sep: string = ", ", lastSep: string = " and ") => {
     item = Array.from(new Set(item));
 
     if (item.length > 1) {
-        return `${item.slice(0, -1).join(", ")} and ${item.at(-1)}`;
+        return `${item.slice(0, -1).join(sep)}${lastSep}${item.at(-1)}`;
     }
     return item[0];
 }
+
+export const trimPings = (pings: string[]) => {
+    return pings.map(e => e.replace(/^@|,$/g, ""));
+}
+
+export const isEmote = async (emote: string) => {
+    return (await utils.fetchEmotes()).find(e => e.name === emote);
+}
+
+export const cmd = (command: string, params: null | undefined | Record<string, string | number | boolean>, text: string) => {
+	let out = command;
+	if (params) {
+		for (const key in params) {
+			if (["string", "number"].includes(typeof params[key]) || params[key] === true) {
+				out += ` ${key}:${params[key]}`;
+			}
+		}
+		out += " --";
+	}
+	out += ` ${text}`;
+	return out;
+}
+
+export const say = (text: string) => `abb say -- ${text}`;

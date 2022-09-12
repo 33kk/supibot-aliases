@@ -1,12 +1,11 @@
 export const GIST_ID = "af8853c4fda707489b6bcb01234c2932";
 /// $pipe _force:true _char:| -- js importGist:${GIST_ID} function:main() -- ${0+} | $ eval | js importGist:${GIST_ID} function:post() -- 
 
-import { entrypoint, pipe, t } from "#";
+import { cmd, entrypoint, pipe, say, t } from "#";
 
 // Google: console.log('[ "' + Array.from(new Set(Array.from(document.querySelectorAll("[data-language-code]")).map(e => e.attributes["data-language-code"].value).filter(e => e != "auto" && !e.includes("-")))).join('", "') + '" ]') 
 
 const LAST_USED = "tr_lastUsed";
-const SAY = "abb say ";
 const LANGUAGE_CODE_NOT_SUPPORTED = "⚠️ Some of the language codes specified are not supported.";
 const INVALID_INPUT = "⚠️ No language code and/or text was specified.";
 
@@ -36,11 +35,10 @@ function checkEngine(engine: string, from: string, to: string) {
 const _args = args as string[];
 
 entrypoint("main", () => {
-
 	const m = /^(?:(?<engine>[gd])-?)?(?:(?<from_>\w{2})?-|(?<from>\w{2})?-?(?<to>\w{2})) (?<text>.+)$/.exec(_args.join(" "));
 
 	if (!m) {
-		return SAY + INVALID_INPUT;
+		return say(INVALID_INPUT);
 	}
 
 	let { engine, from_, from = from_, to, text } = m.groups as Record<string, string>;
@@ -51,17 +49,17 @@ entrypoint("main", () => {
 		else if (checkEngine("g", from, to))
 			engine = "g";
 		else
-			return SAY + LANGUAGE_CODE_NOT_SUPPORTED;
+			return say(LANGUAGE_CODE_NOT_SUPPORTED);
 	}
 	else if (!checkEngine(engine, from, to))
-		return SAY +LANGUAGE_CODE_NOT_SUPPORTED;
+		return say(LANGUAGE_CODE_NOT_SUPPORTED);
 
 	const ocr = _args.length === 2 && _args[1].startsWith("https://");
 
 	return pipe(
-		ocr && t`ocr ${from && `lang:${from}`} -- ${text}`,
-		t`translate textOnly:false ${engine && "engine:" + ENGINES[engine]} ${from && "from:" + from} ${to && "to:" + to} -- ${ocr ? "" : text}`,
-		`abb say ${ENGINE_ICONS[engine]}`
+		ocr && cmd("ocr", { lang: from }, text),
+		cmd("translate", { textOnly: "false", engine: ENGINES[engine], from, to }, ocr ? "" : text),
+		say(ENGINE_ICONS[engine])
 	);
 });
 
