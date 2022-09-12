@@ -1,9 +1,9 @@
 export const GIST_ID = "c605e919445029e6368c994b4043bf21";
-// -------------------------------------------------------
+/// $pipe -- alias code ${0} | js importGist:c605e919445029e6368c994b4043bf21 function:main() -- | alias edit ${0}
 
-import { def } from "#";
+import { entrypoint } from "#";
 
-def("main", () => {
+entrypoint("main", () => {
 	let code = (args as string[]).join(" ");
 
 	const matches = Array.from(code.matchAll(/_char:([^\s]+)/g)).map(e => e[1]);
@@ -14,4 +14,3 @@ def("main", () => {
 
 	return code;
 });
-

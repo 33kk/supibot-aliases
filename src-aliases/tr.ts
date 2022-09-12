@@ -1,7 +1,7 @@
 export const GIST_ID = "af8853c4fda707489b6bcb01234c2932";
-// -------------------------------------------------------
+/// $pipe _force:true _char:NWeocqXKgxXrwYUGInbCnrqxK -- js importGist:af8853c4fda707489b6bcb01234c2932 function:main() -- ${0+} NWeocqXKgxXrwYUGInbCnrqxK $ eval NWeocqXKgxXrwYUGInbCnrqxK js importGist:af8853c4fda707489b6bcb01234c2932 function:post() -- 
 
-import { def, pipe, t } from "#";
+import { entrypoint, pipe, t } from "#";
 
 // Google: console.log('[ "' + Array.from(new Set(Array.from(document.querySelectorAll("[data-language-code]")).map(e => e.attributes["data-language-code"].value).filter(e => e != "auto" && !e.includes("-")))).join('", "') + '" ]') 
 
@@ -35,7 +35,7 @@ function checkEngine(engine: string, from: string, to: string) {
 
 const _args = args as string[];
 
-def("main", () => {
+entrypoint("main", () => {
 
 	const m = /^(?:(?<engine>[gd])-?)?(?:(?<from_>\w{2})?-|(?<from>\w{2})?-?(?<to>\w{2})) (?<text>.+)$/.exec(_args.join(" "));
 
@@ -65,7 +65,7 @@ def("main", () => {
 	);
 });
 
-def("post", () => {
+entrypoint("post", () => {
 	if (_args.join(" ") === 'Your pipe failed because the "pipe" command is currently on cooldown!') {
 		const lastUsed = customData.get(LAST_USED);
 		let timeLeft = -1;

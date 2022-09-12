@@ -1,4 +1,4 @@
-export const def = (name: any, fn: any) => {
+export const entrypoint = (name: any, fn: any) => {
 	(<any>global)[name] = fn;
 };
 
@@ -25,3 +25,12 @@ export const t = (strings: TemplateStringsArray, ...values: any[]) => {
 }
 
 export const callback = (fn: string, gistId: string) => `js importGist:${gistId} function:${fn}() --`;
+
+function joinWithAnd(item: string[]) {
+    item = Array.from(new Set(item));
+
+    if (item.length > 1) {
+        return `${item.slice(0, -1).join(", ")} and ${item.at(-1)}`;
+    }
+    return item[0];
+}

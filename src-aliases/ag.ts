@@ -1,9 +1,9 @@
 export const GIST_ID = "07ccac445ff5b056b40e5cba8ed913be";
-// -------------------------------------------------------
+/// $pipe _char:MmWzvoUetkqnTPGuOkhdlStua -- alias code ${0+} MmWzvoUetkqnTPGuOkhdlStua js importGist:07ccac445ff5b056b40e5cba8ed913be function:main() -- 
 
-import { def, IMPORT_GIST_REGEX } from "#";
+import { entrypoint, IMPORT_GIST_REGEX } from "#";
 
-def("main", () => {
+entrypoint("main", () => {
 	const code = (args as string[]).join(" ");
 
 	const matches: string[] = [];
@@ -14,4 +14,3 @@ def("main", () => {
 	
 	return matches.map(m => `https://gist.github.com/${m}`).join(" ");
 });
-

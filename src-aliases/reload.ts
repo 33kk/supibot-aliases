@@ -1,12 +1,12 @@
 export const GIST_ID = "44de2e5479bee84e5433f46b7726400c";
-// -------------------------------------------------------
+/// $pipe _char:kMgTVPTpOgkBXnBsblIZVEwXL -- js importGist:44de2e5479bee84e5433f46b7726400c function:main() -- ${0+} kMgTVPTpOgkBXnBsblIZVEwXL $ eval 
 
-import { callback, def, IMPORT_GIST_REGEX, pipe, pluralize } from "#";
+import { callback, entrypoint, IMPORT_GIST_REGEX, pipe, pluralize } from "#";
 
 const SAY_CMD = "abb say --";
 const RELOAD_CMD = "js errorInfo:true force:true";
 
-def("main", () => {
+entrypoint("main", () => {
 	const arg = (args as string[])[0];
 
 	if (/^[0-9a-z]{32}$/.test(arg))
@@ -15,7 +15,7 @@ def("main", () => {
 		return pipe(`alias code ${arg}`, callback("parse", GIST_ID), "$ eval");
 });
 
-def("parse", () => {
+entrypoint("parse", () => {
 	const code = (args as string[]).join(" ");
 
 	let gists: string[] = [];
