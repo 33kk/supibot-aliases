@@ -1,5 +1,5 @@
 export const GIST_ID = "07ccac445ff5b056b40e5cba8ed913be";
-/// $pipe _char:| -- alias code ${0+} | js importGist:07ccac445ff5b056b40e5cba8ed913be function:main() -- 
+/// $pipe _char:| -- alias code ${0+} | js importGist:${GIST_ID} function:main() -- 
 
 import { entrypoint, IMPORT_GIST_REGEX } from "#";
 

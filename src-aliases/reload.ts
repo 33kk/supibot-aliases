@@ -1,5 +1,5 @@
 export const GIST_ID = "44de2e5479bee84e5433f46b7726400c";
-/// $pipe _char:| -- js importGist:44de2e5479bee84e5433f46b7726400c function:main() -- ${0+} | $ eval 
+/// $pipe _char:| -- js importGist:${GIST_ID} function:main() -- ${0+} | $ eval 
 
 import { callback, entrypoint, IMPORT_GIST_REGEX, pipe, pluralize } from "#";
 

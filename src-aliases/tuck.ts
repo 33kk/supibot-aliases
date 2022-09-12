@@ -1,5 +1,5 @@
 export const GIST_ID = "2869489a25471002e80fb6b9b060ec1a";
-/// $js importGist:2869489a25471002e80fb6b9b060ec1a function:main() errorInfo:true ${0+}
+/// $js importGist:${GIST_ID} function:main() errorInfo:true ${0+}
 
 import { entrypoint } from "#";
 

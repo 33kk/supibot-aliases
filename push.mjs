@@ -140,7 +140,7 @@ async function updateAlias(name) {
 		console.log(chalk.yellow("No alias command found"));
 	}
 	else {
-		let aliasCommand = aliasCommandMatch[1];
+		let aliasCommand = aliasCommandMatch[1].replaceAll("${GIST_ID}", gistId);
 
 		const matches = Array.from(aliasCommand.matchAll(/_char:([^\s]+)/g)).map(e => e[1]);
 
