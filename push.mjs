@@ -16,9 +16,9 @@ async function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function waitCooldown() {
+async function waitCooldown(s = 3) {
 	console.log(chalk.gray("Waiting for cooldown..."));
-	while (!((+new Date() - lastRun) > 3 * 1000)) {
+	while (!((+new Date() - lastRun) > s * 1000)) {
 		await sleep(50);
 	}
 }
@@ -32,9 +32,22 @@ async function supibotCommand(query) {
 		},
 		body: JSON.stringify({ query: "$" + query })
 	});
+	lastRun = +new Date();
 	const json = await res.json();
 	return json.data.reply;
 }
+
+function chunkify(array, maxSize) {
+	if (maxSize < 1) return [];
+	let out = [];
+	const chunks = Math.ceil(array.length / maxSize);
+	for (let i = 0; i < chunks; i++) {
+		out.push(array.slice(i * maxSize, i * maxSize + maxSize));
+	}
+	return out;
+}
+
+let updatedGists = [];
 
 async function main() {
 	let aliases = process.argv.slice(2);
@@ -51,6 +64,20 @@ async function main() {
 			console.error(chalk.red(e));
 		}
 	}
+
+	const gistChunks = chunkify(updatedGists, 8);
+
+	for (const chunk of gistChunks) {
+		console.log(`Reloading ${chunk.join(", ")}`);
+
+		await waitCooldown(7.5);
+		const response = await supibotCommand(`pipe ${chunk.map(gistId => `js force:true errorInfo:true importGist:${gistId} "//"`).join(" | ")} | null | abb say Gists successfully reloaded!`);
+
+		if (!response.includes("success")) {
+			throw response;
+		}
+		console.log(chalk.green(response));
+	}
 }
 
 async function updateAlias(name) {
@@ -58,12 +85,9 @@ async function updateAlias(name) {
 	const bundlePath = join("./dist", `${name}.js`);
 
 	const source = await readFile(sourcePath, { encoding: "utf-8" });
+
 	const gistIdMatch = source.match(/^(?:export )?const GIST_ID = ['"`](.*?)['"`];?/m);
 	const aliasCommandMatch = source.match(/^\/\/\/ \$(.*?)$/m);
-
-	if (!gistIdMatch) {
-		throw "No gist id found";
-	}
 
 	await build({
 		write: true,
@@ -74,6 +98,10 @@ async function updateAlias(name) {
 		outfile: bundlePath
 	});
 
+	if (!gistIdMatch) {
+		throw "No gist id found";
+	}
+
 	const gistId = gistIdMatch[1];
 
 	const gist = await octokit.gists.get({
@@ -81,9 +109,10 @@ async function updateAlias(name) {
 	});
 
 	const gistFilename = Object.keys(gist.data.files)[0];
-	const newContent = await readFile(bundlePath, { encoding: "utf-8" });
 
-	if (gist.data.files[gistFilename].content === newContent) {
+	const bundle = await readFile(bundlePath, { encoding: "utf-8" });
+
+	if (gist.data.files[gistFilename].content === bundle) {
 		console.log(chalk.green("Gist content is already up to date"));
 	}
 	else {
@@ -91,12 +120,15 @@ async function updateAlias(name) {
 			gist_id: gistId,
 			files: {
 				[gistFilename]: {
-					content: newContent
+					content: bundle
 				}
 			}
 		});
 
-		console.log(chalk.green(`Gist updated: https://gist.github.com/${gistId}`));
+		if (!updatedGists.includes(gistId))
+			updatedGists.push(gistId);
+
+		console.log(chalk.green(`Gist updated! https://gist.github.com/${gistId}`));
 	}
 
 	if (!aliasCommandMatch) {
@@ -107,13 +139,11 @@ async function updateAlias(name) {
 
 		await waitCooldown();
 		const response = await supibotCommand(`alias addedit ${name} ${aliasCommand}`);
-		lastRun = +new Date();
 		if (!response.includes("success")) {
 			throw response;
 		}
 		console.log(chalk.green(response));
 	}
-
 }
 
 main();
