@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "new": "node new.mjs",
     "push": "node push.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

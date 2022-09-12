@@ -121,6 +121,7 @@ async function updateAlias(name) {
 			description: config.repo,
 			files: {
 				[gistFilename]: {
+					filename: `supibot-${name}.js`,
 					content: bundle
 				}
 			}
