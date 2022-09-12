@@ -33,7 +33,7 @@ async function main() {
 	});
 
 	const content = `export const GIST_ID = "${gist.data.id}";
-/// $js importGist:${gist.data.id} function:main() -- \${0+}
+/// $js importGist:\${GIST_ID} function:main() -- \${0+}
 
 import { entrypoint } from "#";
 
