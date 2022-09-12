@@ -11,7 +11,7 @@ const utils = supiUtils.singleton();
 
 const octokit = new Octokit({
 	auth: config.github
-})
+});
 
 let lastRun = 0;
 
@@ -32,6 +32,7 @@ async function supibotCommand(query, cooldown = 3) {
 	const res = await fetch("https://supinic.com/api/bot/command/run", {
 		method: "POST",
 		headers: {
+			"User-Agent": `supibot-aliases (${config.repo})`,
 			"Authorization": `Basic ${config.supibot}`,
 			"Content-Type": "application/json"
 		},
