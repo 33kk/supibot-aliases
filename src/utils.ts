@@ -17,7 +17,7 @@ export const t = (strings: TemplateStringsArray, ...values: any[]) => {
 
 	for (let i = 0; i < strings.length; i++) {
 		out += strings[i];
-		if (typeof values[i] === "string" || typeof values[i] === "number" || Boolean(values[i]))
+		if (["string", "number"].includes(typeof values[i]) || Boolean(values[i]))
 			out += values[i];
 	}
 
