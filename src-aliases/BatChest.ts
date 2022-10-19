@@ -4,39 +4,40 @@ export const GIST_ID = "bd158d0338d8e24efec397740bf68927";
 import { entrypoint } from "#";
 
 const LANGUAGES = [
-	"ASSEMBLY",
-	"BASH",
+	"Assembly",
+	"Bash",
 	"C",
 	"C#",
 	"C++",
-	"DART",
-	"DELPHI",
+	"Dart",
+	"Delphi",
 	"F#",
-	"GO",
-	"HARE",
-	"HASKELL",
-	"JAKT",
-	"JAVA",
-	"JS",
-	"JULIA",
-	"KOTLIN",
-	"LISP",
-	"LUA",
-	"OCAML",
-	"PASCAL",
+	"Go",
+	"Hare",
+	"Haskell",
+	"Jakt",
+	"Java",
+	"JavaScript",
+	"Julia",
+	"Kotlin",
+	"Lisp",
+	"Lua",
+	"OCaml",
 	"PHP",
-	"POSIX SHELL",
-	"PYTHON",
-	"RUBY",
-	"RUST",
-	"TYPESCRIPT",
-	"VALA",
-	"VISUAL BASIC",
-	"ZIG",
+	"POSIX Shell",
+	"Pascal",
+	"Python",
+	"Ruby",
+	"Rust",
+	"TypeScript",
+	"Vala",
+	"Visual Basic",
+	"Zig",
 ];
 
 entrypoint("main", () => {
-	const target = args.length > 0 ? args.join(" ").toUpperCase() : "IT";
+	const target = args.length > 0 ? args.join(" ") : "IT";
+	const language = utils.randArray(LANGUAGES)!;
 
-	return `REWRITE ${target} IN ${utils.randArray(LANGUAGES)} BatChest BatChest BatChest 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀`;
+	return `REWRITE ${target.toUpperCase()} IN ${language.toUpperCase()} ${"BatChest ".repeat(utils.random(1, 3))} ${"🚀".repeat(utils.random(5, 10))}`;
 });
