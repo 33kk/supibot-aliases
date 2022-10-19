@@ -4,7 +4,7 @@ import { join } from "path";
 import { build as esbuild } from "esbuild";
 import { Octokit } from "@octokit/rest";
 import chalk from "chalk";
-import config from "./config.mjs";
+import config from "../config.mjs";
 import supiUtils from "supi-core/singletons/utils.js";
 
 const utils = supiUtils.singleton();
