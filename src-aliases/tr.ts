@@ -32,10 +32,8 @@ function checkEngine(engine: string, from: string, to: string) {
 	return checkLanguage(engine, from) && checkLanguage(engine, to);
 }
 
-const _args = args as string[];
-
 entrypoint("main", () => {
-	const m = /^(?:(?<engine>[gd])-?)?(?:(?<from_>\w{2})?-|(?<from>\w{2})?-?(?<to>\w{2})) (?<text>.+)$/.exec(_args.join(" "));
+	const m = /^(?:(?<engine>[gd])-?)?(?:(?<from_>\w{2})?-|(?<from>\w{2})?-?(?<to>\w{2})) (?<text>.+)$/.exec(args.join(" "));
 
 	if (!m) {
 		return say(INVALID_INPUT);
@@ -54,7 +52,7 @@ entrypoint("main", () => {
 	else if (!checkEngine(engine, from, to))
 		return say(LANGUAGE_CODE_NOT_SUPPORTED);
 
-	const ocr = _args.length === 2 && _args[1].startsWith("https://");
+	const ocr = args.length === 2 && args[1].startsWith("https://");
 
 	return pipe(
 		ocr && cmd("ocr", { lang: from }, text),
@@ -64,7 +62,7 @@ entrypoint("main", () => {
 });
 
 entrypoint("post", () => {
-	if (_args.join(" ") === 'Your pipe failed because the "pipe" command is currently on cooldown!') {
+	if (args.join(" ") === 'Your pipe failed because the "pipe" command is currently on cooldown!') {
 		const lastUsed = customData.get(LAST_USED);
 		let timeLeft = -1;
 		if (lastUsed)
@@ -74,5 +72,5 @@ entrypoint("post", () => {
 	}
 
 	customData.set(LAST_USED, +new Date());
-	return _args.join(" ");
+	return args.join(" ");
 });

@@ -6,7 +6,7 @@ import { callback, cmd, entrypoint, IMPORT_GIST_REGEX, pipe, pluralize, say } fr
 const reload = (gistId: string, text: string) => cmd("js", { errorInfo: true, force: true, importGist: gistId }, text);
 
 entrypoint("main", () => {
-	const arg = (args as string[])[0];
+	const arg = args[0];
 
 	if (/^[0-9a-z]{32}$/.test(arg))
 		return reload(arg, "Reloaded!");
@@ -15,7 +15,7 @@ entrypoint("main", () => {
 });
 
 entrypoint("parse", () => {
-	const code = (args as string[]).join(" ");
+	const code = args.join(" ");
 
 	let gists: string[] = [];
 	for (const match of code.matchAll(IMPORT_GIST_REGEX)) {

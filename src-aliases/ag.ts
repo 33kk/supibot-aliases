@@ -4,7 +4,7 @@ export const GIST_ID = "07ccac445ff5b056b40e5cba8ed913be";
 import { entrypoint, IMPORT_GIST_REGEX } from "#";
 
 entrypoint("main", () => {
-	const code = (args as string[]).join(" ");
+	const code = args.join(" ");
 
 	const matches: string[] = [];
 	for (const match of code.matchAll(IMPORT_GIST_REGEX)) {

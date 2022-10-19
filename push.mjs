@@ -101,7 +101,10 @@ async function updateAlias(name) {
 		minify: true,
 		treeShaking: true,
 		entryPoints: [ sourcePath ],
-		outfile: bundlePath
+		outfile: bundlePath,
+		define: {
+			ALIAS_NAME: `"${name}"`
+		}
 	});
 
 	if (!gistIdMatch) {
@@ -109,9 +112,11 @@ async function updateAlias(name) {
 	}
 
 	const gistId = gistIdMatch[1];
+
 	const gist = await octokit.gists.get({
 		gist_id: gistId
 	});
+
 	const gistFilename = Object.keys(gist.data.files)[0];
 
 	const bundle = await readFile(bundlePath, { encoding: "utf-8" });

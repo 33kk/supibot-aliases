@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@kkx-org/args': ^0.0.5
   '@octokit/rest': ^19.0.4
   '@types/node': ^18.7.16
   '@typescript-eslint/eslint-plugin': ^5.36.2
@@ -13,6 +14,9 @@ specifiers:
   supibot-package-manager: github:supinic/supibot-package-manager
   typescript: ^4.8.3
 
+dependencies:
+  '@kkx-org/args': 0.0.5
+
 devDependencies:
   '@octokit/rest': 19.0.4
   '@types/node': 18.7.16
@@ -22,8 +26,8 @@ devDependencies:
   esbuild: 0.15.7
   eslint: 8.23.0
   prettier: 2.7.1
-  supi-core: github.com/Supinic/supi-core/dfe5be0f7f61e9a8827dc253884194d84a6e7022
-  supibot-package-manager: github.com/supinic/supibot-package-manager/2936cf552b16479046199ac1caa4e93e831cf549
+  supi-core: github.com/Supinic/supi-core/a2ccbc47443a2030f98c5641890f37ca62dde86d
+  supibot-package-manager: github.com/supinic/supibot-package-manager/68046c0065268bb39b65d6fe606fbf09e0d4192e
   typescript: 4.8.3
 
 packages:
@@ -86,6 +90,10 @@ packages:
   /@ioredis/commands/1.2.0:
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
     dev: true
+
+  /@kkx-org/args/0.0.5:
+    resolution: {integrity: sha512-rrGIZwusKzULTv5RQMhrJu2cBbZ7gUZ9Kg1b66XJ4ilc9f3XKE/HBTQlGADfgxAuHiFq+EJURNFa+yEg7krArA==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2081,8 +2089,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/Supinic/supi-core/dfe5be0f7f61e9a8827dc253884194d84a6e7022:
-    resolution: {tarball: https://codeload.github.com/Supinic/supi-core/tar.gz/dfe5be0f7f61e9a8827dc253884194d84a6e7022}
+  github.com/Supinic/supi-core/a2ccbc47443a2030f98c5641890f37ca62dde86d:
+    resolution: {tarball: https://codeload.github.com/Supinic/supi-core/tar.gz/a2ccbc47443a2030f98c5641890f37ca62dde86d}
     name: supi-core
     version: 2.2.0
     dependencies:
@@ -2101,7 +2109,7 @@ packages:
       mariadb: 3.0.1
       random-js: 2.1.0
       rss-parser: 3.12.0
-      supibot-package-manager: github.com/supinic/supibot-package-manager/2936cf552b16479046199ac1caa4e93e831cf549
+      supibot-package-manager: github.com/supinic/supibot-package-manager/68046c0065268bb39b65d6fe606fbf09e0d4192e
       track-link-parser: github.com/supinic/track-link-parser/e564afaf232acf79edcf52fd521d59259346f24b
       transliteration: 2.3.5
       vm2: 3.9.11
@@ -2144,8 +2152,8 @@ packages:
     engines: {node: '>= 8.0'}
     dev: true
 
-  github.com/supinic/supibot-package-manager/2936cf552b16479046199ac1caa4e93e831cf549:
-    resolution: {tarball: https://codeload.github.com/supinic/supibot-package-manager/tar.gz/2936cf552b16479046199ac1caa4e93e831cf549}
+  github.com/supinic/supibot-package-manager/68046c0065268bb39b65d6fe606fbf09e0d4192e:
+    resolution: {tarball: https://codeload.github.com/supinic/supibot-package-manager/tar.gz/68046c0065268bb39b65d6fe606fbf09e0d4192e}
     name: supibot-package-manager
     version: 1.0.0
     dev: true

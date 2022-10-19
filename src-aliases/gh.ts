@@ -3,11 +3,9 @@ export const GIST_ID = "8c518a418d5eac3df8a564d6692e1ec2";
 
 import { entrypoint, GIST_REGEX } from "#";
 
-const _args = args as string[];
-
 entrypoint("main", () => {
-	if (GIST_REGEX.test(_args[0]))
-		return `https://gist.github.com/${_args[0]}`;
+	if (GIST_REGEX.test(args[0]))
+		return `https://gist.github.com/${args[0]}`;
 
-	return `https://github.com/${_args.join("/")}`;
+	return `https://github.com/${args.join("/")}`;
 });

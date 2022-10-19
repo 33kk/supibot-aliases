@@ -1,9 +1,7 @@
 export const GIST_ID = "2869489a25471002e80fb6b9b060ec1a";
 /// $js importGist:${GIST_ID} function:main() errorInfo:true ${0+}
 
-import { entrypoint, isEmote, joinCustomLastSep, trimPings } from "#";
-
-const _args = args as string[];
+import { entrypoint, isEmote, trimMentions } from "#";
 
 type TuckAction = "tuck" | "untuck";
 
@@ -29,26 +27,28 @@ async function getTuckEmote(action: TuckAction) {
 entrypoint("main", async (action: TuckAction = "tuck") => {
     let emote;
 
-    if (_args.length > 1 && await isEmote(_args.at(-1)!)) {
-        emote = _args.pop();
+    if (args.length > 1 && await isEmote(args.at(-1)!)) {
+        emote = args.pop();
     }
 
     if (!emote) {
         emote = await getTuckEmote(action);
     }
 
-    const users = trimPings(_args);
+    const lf = new Intl.ListFormat("en");
+
+    const users = trimMentions(args);
     switch (action) {
         case "tuck":
             if (users.length === 1 && users[0].toLowerCase() === "gazatu") {
                 return `${users[0]} is too smol to tuck ppL`;
             }
-            return `You tucked ${_args.length > 0
-                 ? `${joinCustomLastSep(users)} to bed ${emote}`
+            return `You tucked ${args.length > 0
+                 ? `${lf.format(users)} to bed ${emote}`
                  : `yourself to bed, I guess supiniWeirdga`} 👉 🛏️`;
         case "untuck":
-            return `You pull ${_args.length > 0
-                 ? `${joinCustomLastSep(users)} out of the bed ${emote}`
+            return `You pull ${args.length > 0
+                 ? `${lf.format(users)} out of the bed ${emote}`
                  : `yourself out of the bed, I guess? supiniWeirdga`} FBCatch 🛏️`;
     }
 });

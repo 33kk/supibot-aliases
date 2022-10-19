@@ -22,6 +22,7 @@ import type { UtilsSingleton } from "supi-core/@types/singletons/utils";
 //			(using `declare global { /* ... */ }`) with the types defined in this file.
 
 declare global {
+	export const ALIAS_NAME: string;
 	/**
 	 * The type of the global `utils` object.
 	 */
@@ -126,7 +127,7 @@ declare global {
 	 *
 	 * In all other cases when neither the function parameter nor the arguments parameter is provided, the value is null.
 	 */
-	export const args: null | string[] | JSONifiable;
+	export const args: string[];
 
 	/**
 	 * The channel the command is being executed in.
